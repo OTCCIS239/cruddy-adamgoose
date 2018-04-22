@@ -1,7 +1,6 @@
-<?php
+<?php namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
-
+use App\Tabletop;
 use Illuminate\Http\Request;
 
 class TabletopsController extends Controller
@@ -13,7 +12,9 @@ class TabletopsController extends Controller
      */
     public function index()
     {
-        return view('tabletops.index');
+        $tabletops = Tabletop::all();
+
+        return view('tabletops.index', compact('tabletops'));
     }
 
     /**
@@ -23,7 +24,7 @@ class TabletopsController extends Controller
      */
     public function create()
     {
-        //
+        return view('tabletops.create');
     }
 
     /**
@@ -34,7 +35,13 @@ class TabletopsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+        ]);
+
+        $tabletop = Tabletop::create($request->all());
+
+        return redirect('/tabletops/' . $tabletop->id);
     }
 
     /**
@@ -43,9 +50,9 @@ class TabletopsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Tabletop $tabletop)
     {
-        //
+        return view('tabletops.show', compact('tabletop'));
     }
 
     /**
@@ -54,9 +61,9 @@ class TabletopsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Tabletop $tabletop)
     {
-        //
+        return view('tabletops.edit', compact('tabletop'));
     }
 
     /**
@@ -66,9 +73,11 @@ class TabletopsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Tabletop $tabletop)
     {
-        //
+        $tabletop->update($request->all());
+
+        return redirect('/tabletops/' . $tabletop->id);
     }
 
     /**
@@ -77,8 +86,10 @@ class TabletopsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Tabletop $tabletop)
     {
-        //
+        $tabletop->delete();
+
+        return redirect('/tabletops');
     }
 }

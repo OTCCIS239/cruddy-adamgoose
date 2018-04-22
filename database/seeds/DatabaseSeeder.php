@@ -1,5 +1,6 @@
 <?php
 
+use App\Tabletop;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,6 +12,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        factory(Tabletop::class, 10)->create();
     }
 }
